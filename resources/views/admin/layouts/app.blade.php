@@ -266,6 +266,29 @@
             <span>Checklists</span>
         </a>
         
+        <!-- Taxa Management -->
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-item">
+            <i class="bi bi-tree"></i>
+            <span>Data Taxa</span>
+        </div>
+        <a href="{{ route('admin.taxas.index') }}" class="sidebar-item {{ request()->routeIs('admin.taxas.index') ? 'active' : '' }}">
+            <i class="bi bi-list-ul"></i>
+            <span>Daftar Taxa</span>
+        </a>
+        <a href="{{ route('admin.taxas.search') }}" class="sidebar-item {{ request()->routeIs('admin.taxas.search') ? 'active' : '' }}">
+            <i class="bi bi-search"></i>
+            <span>Pencarian Taxa</span>
+        </a>
+        <a href="{{ route('admin.taxas.sync') }}" class="sidebar-item {{ request()->routeIs('admin.taxas.sync') ? 'active' : '' }}">
+            <i class="bi bi-arrow-repeat"></i>
+            <span>Sinkronisasi Taxa</span>
+        </a>
+        <a href="{{ route('admin.taxas.compare') }}" class="sidebar-item {{ request()->routeIs('admin.taxas.compare') ? 'active' : '' }}">
+            <i class="bi bi-columns-gap"></i>
+            <span>Perbandingan Taxa</span>
+        </a>
+        
         <!-- System -->
         <div class="sidebar-divider"></div>
         <div class="sidebar-item">

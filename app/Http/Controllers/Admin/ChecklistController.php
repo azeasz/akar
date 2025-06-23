@@ -254,12 +254,11 @@ class ChecklistController extends Controller
     private function getCategoryIdFromType($type)
     {
         $mapping = [
-            'burung' => 1,
-            'mamalia' => 2,
-            'reptil' => 3,
-            'amfibi' => 4,
-            'ikan' => 5,
-            'lainnya' => 6,
+            'perburuan' => 1,
+            'lomba' => 2,
+            'perdagangan' => 3,
+            'pemeliharaan' => 4,
+            'penangkaran' => 5,
             'pemeliharaan & penangkaran' => 6,
             'pemeliharaan dan penangkaran' => 6
         ];
@@ -273,11 +272,11 @@ class ChecklistController extends Controller
     private function getTypeFromCategoryId($categoryId)
     {
         $mapping = [
-            1 => 'burung',
-            2 => 'mamalia',
-            3 => 'reptil',
-            4 => 'amfibi',
-            5 => 'ikan',
+            1 => 'perburuan',
+            2 => 'lomba',
+            3 => 'perdagangan',
+            4 => 'pemeliharaan',
+            5 => 'penangkaran',
             6 => 'pemeliharaan & penangkaran'
         ];
         

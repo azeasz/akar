@@ -112,6 +112,22 @@ class ChecklistFauna extends Model
     }
     
     /**
+     * Relasi ke taxa local
+     */
+    public function taxaLocal()
+    {
+        return $this->belongsTo(TaxaLocal::class, 'fauna_id', 'taxa_id');
+    }
+    
+    /**
+     * Relasi ke taxa di database kedua
+     */
+    public function taxa()
+    {
+        return $this->belongsTo(Taxa::class, 'fauna_id', 'id');
+    }
+    
+    /**
      * Scope untuk mencari berdasarkan kata kunci
      */
     public function scopeSearch($query, $keyword)

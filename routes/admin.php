@@ -8,7 +8,9 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\RegistrationController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\TaxaController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\ChecklistFaunaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -64,6 +66,22 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::put('registrations/{registration}/approve', [RegistrationController::class, 'approve'])->name('registrations.approve');
         Route::put('registrations/{registration}/reject', [RegistrationController::class, 'reject'])->name('registrations.reject');
         Route::resource('registrations', RegistrationController::class)->only(['index', 'show']);
+        
+        // Taxa Management
+        Route::get('taxas/search', [TaxaController::class, 'search'])->name('taxas.search');
+        Route::get('taxas/search/results', [TaxaController::class, 'searchResults'])->name('taxas.search.results');
+        Route::get('taxas/sync', [TaxaController::class, 'sync'])->name('taxas.sync');
+        Route::post('taxas/sync', [TaxaController::class, 'processSync'])->name('taxas.process_sync');
+        Route::get('taxas/select-modal', [TaxaController::class, 'selectModal'])->name('taxas.select_modal');
+        Route::get('taxas/compare', [TaxaController::class, 'compare'])->name('taxas.compare');
+        Route::post('taxas/{taxa}/import', [TaxaController::class, 'import'])->name('taxas.import');
+        Route::post('taxas/{taxa}/sync-single', [TaxaController::class, 'syncSingle'])->name('taxas.sync_single');
+        Route::put('taxas/{taxa}/update-iucn', [TaxaController::class, 'updateIucnStatus'])->name('taxas.update_iucn');
+        Route::put('taxas/{taxa}/update-cites', [TaxaController::class, 'updateCitesStatus'])->name('taxas.update_cites');
+        Route::resource('taxas', TaxaController::class)->only(['index', 'show']);
+        
+        // Checklist Fauna
+        Route::get('checklist-faunas/{fauna}/find-taxa', [ChecklistFaunaController::class, 'findTaxa'])->name('checklist-faunas.find-taxa');
         
         // Logout
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');

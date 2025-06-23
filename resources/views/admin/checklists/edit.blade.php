@@ -139,7 +139,7 @@
                                 <option value="perburuan" {{ (old('type', $checklist->type) == 'perburuan') ? 'selected' : '' }}>Perburuan</option>
                                 <option value="lomba" {{ (old('type', $checklist->type) == 'lomba') ? 'selected' : '' }}>Lomba</option>
                                 <option value="perdagangan" {{ (old('type', $checklist->type) == 'perdagangan') ? 'selected' : '' }}>Perdagangan</option>
-                                <option value="lainnya" {{ (old('type', $checklist->type) == 'lainnya') ? 'selected' : '' }}>Lainnya</option>
+                                <option value="pemeliharaan & penangkaran" {{ (old('type', $checklist->type) == 'pemeliharaan & penangkaran' || old('type', $checklist->type) == 'lainnya') ? 'selected' : '' }}>Pemeliharaan & Penangkaran</option>
                             </select>
                         </div>
                     </div>

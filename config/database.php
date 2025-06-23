@@ -83,6 +83,25 @@ return [
             ]) : [],
         ],
 
+        'amaturalist' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL_AMATURALIST'),
+            'host' => env('AMATURALIST_DB_HOST', '127.0.0.1'),
+            'port' => env('AMATURALIST_DB_PORT', '3306'),
+            'database' => env('AMATURALIST_DB_DATABASE', 'amaturalist'),
+            'username' => env('AMATURALIST_DB_USERNAME', 'forge'),
+            'password' => env('AMATURALIST_DB_PASSWORD', ''),
+            'unix_socket' => env('AMATURALIST_DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
 
         'pgsql' => [
             'driver' => 'pgsql',

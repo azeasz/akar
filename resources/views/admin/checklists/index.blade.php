@@ -140,13 +140,7 @@
                         <td>{{ $checklist->id }}</td>
                         <td>{{ $checklist->user->name }}</td>
                         <td>{{ $checklist->nama_lokasi }}</td>
-                        <td>
-                            @if(strtolower($checklist->type) === 'lainnya')
-                                Pemeliharaan & Penangkaran
-                            @else
-                                {{ $checklist->type_text }}
-                            @endif
-                        </td>
+                        <td>{{ $checklist->type_text }}</td>
                         <td>{{ $checklist->tanggal->format('d M Y') }}</td>
                         <td>
                             <span class="badge bg-status-{{ $checklist->status }}">

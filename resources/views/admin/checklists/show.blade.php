@@ -246,6 +246,14 @@
                                         <div class="mb-2">
                                             <strong>Cincin:</strong> {{ $fauna->cincin ? 'Ya' : 'Tidak' }}
                                         </div>
+                                        @if($fauna->fauna_id)
+                                        <div class="mb-2">
+                                            <strong>ID Taxa:</strong> 
+                                            <a href="{{ route('admin.checklist-faunas.find-taxa', $fauna->id) }}" class="btn btn-sm btn-info">
+                                                {{ $fauna->fauna_id }} <i class="bi bi-search"></i>
+                                            </a>
+                                        </div>
+                                        @endif
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-2">
