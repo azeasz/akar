@@ -15,12 +15,13 @@ class ChecklistFauna extends Model
      */
     protected $fillable = [
         'checklist_id',
+        'taxa_id',
         'nama_spesies',
+        'nama_latin',
         'jumlah',
-        'gender',
+        'catatan',
         'cincin',
         'tagging',
-        'catatan',
         'status_buruan',
         'alat_buru',
         'fauna_id',
@@ -28,7 +29,6 @@ class ChecklistFauna extends Model
         'harga',
         'kondisi',
         'ijin',
-        'total', // Untuk kompatibilitas dengan struktur lama
     ];
     
     /**
@@ -38,7 +38,6 @@ class ChecklistFauna extends Model
         'cincin' => 'boolean',
         'tagging' => 'boolean',
         'jumlah' => 'integer',
-        'total' => 'integer', // Untuk kompatibilitas dengan struktur lama
     ];
     
     /**
@@ -57,14 +56,7 @@ class ChecklistFauna extends Model
             ]);
         });
         
-        // Sinkronkan antara jumlah dan total untuk kompatibilitas
         static::saving(function($fauna) {
-            if (isset($fauna->attributes['jumlah']) && !isset($fauna->attributes['total'])) {
-                $fauna->total = $fauna->jumlah;
-            } elseif (isset($fauna->attributes['total']) && !isset($fauna->attributes['jumlah'])) {
-                $fauna->jumlah = $fauna->total;
-            }
-            
             // Konversi gender dari kode ke string jika diperlukan
             if (isset($fauna->attributes['gender']) && is_numeric($fauna->attributes['gender'])) {
                 $genderMap = [
@@ -110,6 +102,14 @@ class ChecklistFauna extends Model
     {
         return $this->belongsTo(Checklist::class);
     }
+
+    /**
+     * Relasi ke fauna (taxa)
+     */
+    public function fauna()
+    {
+        return $this->belongsTo(Taxa::class, 'fauna_id');
+    }
     
     /**
      * Relasi ke taxa local
@@ -119,6 +119,9 @@ class ChecklistFauna extends Model
         return $this->belongsTo(TaxaLocal::class, 'fauna_id', 'taxa_id');
     }
     
+    /**
+     * Relasi ke taxa di database kedua
+     */
     /**
      * Relasi ke taxa di database kedua
      */

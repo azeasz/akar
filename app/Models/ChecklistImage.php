@@ -15,6 +15,7 @@ class ChecklistImage extends Model
      */
     protected $fillable = [
         'checklist_id',
+        'fauna_id',
         'image_path',
     ];
     
@@ -24,5 +25,13 @@ class ChecklistImage extends Model
     public function checklist()
     {
         return $this->belongsTo(Checklist::class);
+    }
+
+    /**
+     * Relasi ke taksa (fauna)
+     */
+    public function fauna()
+    {
+        return $this->belongsTo(Taxa::class, 'fauna_id');
     }
 } 

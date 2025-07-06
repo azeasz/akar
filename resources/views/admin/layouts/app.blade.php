@@ -367,7 +367,7 @@
         
         <!-- Footer -->
         <div class="footer">
-            <div>&copy; {{ date('Y') }} AKAR. All rights reserved.</div>
+            <div>&copy; {{ date('Y') }} AKAR. Rebuilt by <a href="https://galangadif.netlify.app" target="_blank" rel="noopener noreferrer">Galang Adif</a>. Funded, organized, and supported by Birdpacker Indonesia and Garda Animalia.</div>
         </div>
     </div>
     

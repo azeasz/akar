@@ -5,7 +5,7 @@
 /public/storage
 /storage/*.key
 /vendor
-.env
+# .env
 .env.backup
 .env.production
 .phpunit.result.cache
@@ -17,4 +17,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-/.AkarMobileBaru
+/akar-mobile
+/akar-amatisangkar
+

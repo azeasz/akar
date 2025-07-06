@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Checklist extends Model
 {
     use HasFactory, SoftDeletes;
+
+
     
     /**
      * Atribut yang dapat diisi
