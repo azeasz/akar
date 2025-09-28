@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\WebViewController;
+use App\Http\Controllers\Auth\PasswordResetController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +24,16 @@ Route::get('/', function () {
 Route::get('/admin', function () {
     return redirect()->route('admin.login');
 });
+
+// Rute untuk verifikasi email
+Route::get('/email/verify', function () {
+    return view('auth.verification.resend');
+})->name('verification.notice');
+
+// Rute untuk halaman web
+Route::get('/terms-conditions', [WebViewController::class, 'termsConditions'])->name('terms');
+Route::get('/privacy-policy', [WebViewController::class, 'privacyPolicy'])->name('privacy');
+Route::get('/about', [WebViewController::class, 'about'])->name('about');
+
+// Rute untuk reset password
+Route::get('/reset-password/{token}', [PasswordResetController::class, 'showResetForm'])->name('password.reset');

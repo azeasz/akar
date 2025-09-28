@@ -23,13 +23,13 @@ class MigrateOldDataSeeder extends Seeder
         }
         
         // Cek tabel-tabel lama
-        if (!Schema::hasTable('members')) {
+        if (!Schema::hasTable('members_lama')) {
             $this->command->warn('Tabel members tidak ditemukan. Migrasi user dilewati.');
         } else {
             $this->migrateUsers();
         }
         
-        if (!Schema::hasTable('checklists_olds') || !Schema::hasTable('checklist_fauna_olds')) {
+        if (!Schema::hasTable('checklists_lama') || !Schema::hasTable('checklist_faunas_lama')) {
             $this->command->warn('Tabel checklists_olds atau checklist_fauna_olds tidak ditemukan. Migrasi checklist dilewati.');
         } else {
             $this->migrateChecklists();
@@ -46,7 +46,7 @@ class MigrateOldDataSeeder extends Seeder
         $this->command->info('Memulai migrasi data member ke users...');
         
         try {
-            $members = DB::table('members')->get();
+            $members = DB::table('members_lama')->get();
             $count = 0;
             
             $this->command->info('Ditemukan ' . $members->count() . ' members yang akan dimigrasi...');
@@ -110,7 +110,7 @@ class MigrateOldDataSeeder extends Seeder
         $this->command->info('Memulai migrasi data checklist...');
         
         try {
-            $oldChecklists = DB::table('checklists_olds')->get();
+            $oldChecklists = DB::table('checklists_lama')->get();
             $this->command->info('Ditemukan ' . $oldChecklists->count() . ' checklists yang akan dimigrasi...');
             
             $bar = $this->command->getOutput()->createProgressBar($oldChecklists->count());
@@ -171,7 +171,7 @@ class MigrateOldDataSeeder extends Seeder
                 $count++;
                 
                 // Migrasi data fauna untuk checklist ini
-                $oldFaunas = DB::table('checklist_fauna_olds')
+                $oldFaunas = DB::table('checklist_faunas_lama')
                     ->where('checklist_id', $old->id)
                     ->get();
                 

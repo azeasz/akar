@@ -80,7 +80,7 @@
                         </div>
                         
                         <div class="mt-3">
-                            {{ $results->withQueryString()->links() }}
+                            {{ $results->withQueryString()->links('vendor.pagination.custom') }}
                         </div>
                     @endif
                 </div>

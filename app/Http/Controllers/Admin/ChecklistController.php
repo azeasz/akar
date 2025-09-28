@@ -101,7 +101,7 @@ class ChecklistController extends Controller
         // Konversi data untuk tampilan yang konsisten
         $checklists->getCollection()->transform(function($checklist) {
             // Tambahkan property untuk tampilan
-            $checklist->completion_status = $checklist->is_completed || $checklist->confirmed ? 'Selesai' : 'Belum Selesai';
+            $checklist->completion_status = $checklist->is_completed || $checklist->confirmed ? 'Selesai' : '';
             $checklist->type_text = ucfirst($checklist->type);
             $checklist->category_text = $this->getCategoryText($checklist->category_id);
             $checklist->pemilik_display = $checklist->nama_pemilik ?? $checklist->pemilik ?? 'Tidak Ada';
@@ -391,7 +391,7 @@ class ChecklistController extends Controller
             'images' => $checklist->images,
             'type_text' => ucfirst($checklist->type),
             'category_text' => $this->getCategoryText($checklist->category_id),
-            'completion_status' => $checklist->is_completed || $checklist->confirmed ? 'Selesai' : 'Belum Selesai',
+            'completion_status' => $checklist->is_completed || $checklist->confirmed ? '✓' : '◔',
             'pemilik_display' => $checklist->nama_pemilik ?? $checklist->pemilik ?? 'Tidak Ada',
         ];
         

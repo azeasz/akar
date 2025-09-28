@@ -17,10 +17,33 @@
         background-color: #f8f9fc;
         border-left: 4px solid #4e73df;
     }
+    
+    .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.8);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
 </style>
 @endsection
 
 @section('content')
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="text-center">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <div class="mt-2">Memuat data...</div>
+    </div>
+</div>
+
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Manajemen User</h1>
     <div>
@@ -37,11 +60,11 @@
 <div class="card shadow mb-4 filter-card">
     <div class="card-body">
         <form action="{{ route('admin.users.index') }}" method="GET" class="row g-3">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <label for="search" class="form-label">Pencarian</label>
                 <input type="text" class="form-control" id="search" name="search" value="{{ request('search') }}" placeholder="Cari nama, email, username...">
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label for="level" class="form-label">Level</label>
                 <select class="form-select" id="level" name="level">
                     <option value="">Semua Level</option>
@@ -49,7 +72,7 @@
                     <option value="2" {{ request('level') == '2' ? 'selected' : '' }}>Admin</option>
                 </select>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label for="sort_by" class="form-label">Urutkan</label>
                 <select class="form-select" id="sort_by" name="sort_by">
                     <option value="created_at" {{ request('sort_by') == 'created_at' ? 'selected' : '' }}>Tanggal Registrasi</option>
@@ -58,11 +81,20 @@
                     <option value="username" {{ request('sort_by') == 'username' ? 'selected' : '' }}>Username</option>
                 </select>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1">
                 <label for="sort_order" class="form-label">Urutan</label>
                 <select class="form-select" id="sort_order" name="sort_order">
                     <option value="asc" {{ request('sort_order') == 'asc' ? 'selected' : '' }}>Naik</option>
                     <option value="desc" {{ request('sort_order') == 'desc' ? 'selected' : '' }}>Turun</option>
+                </select>
+            </div>
+            <div class="col-md-1">
+                <label for="per_page" class="form-label">Per Halaman</label>
+                <select class="form-select" id="per_page" name="per_page">
+                    <option value="10" {{ request('per_page') == '10' ? 'selected' : '' }}>10</option>
+                    <option value="25" {{ request('per_page') == '25' ? 'selected' : '' }}>25</option>
+                    <option value="50" {{ request('per_page') == '50' ? 'selected' : '' }}>50</option>
+                    <option value="100" {{ request('per_page') == '100' ? 'selected' : '' }}>100</option>
                 </select>
             </div>
             <div class="col-12 d-flex justify-content-end">
@@ -94,8 +126,21 @@
 
 <!-- User List Table -->
 <div class="card shadow mb-4">
-    <div class="card-header py-3">
+    <div class="card-header py-3 d-flex justify-content-between align-items-center">
         <h6 class="m-0 fw-bold">Daftar User</h6>
+        <div class="text-muted small">
+            @if($users->total() > 0)
+                Menampilkan {{ $users->firstItem() }} - {{ $users->lastItem() }} dari {{ $users->total() }} user
+                @if(request('search'))
+                    (hasil pencarian: "{{ request('search') }}")
+                @endif
+                @if(request('level'))
+                    (level: {{ request('level') == '2' ? 'Admin' : 'User' }})
+                @endif
+            @else
+                Tidak ada data user
+            @endif
+        </div>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -212,7 +257,7 @@
         
         <!-- Pagination -->
         <div class="mt-4">
-            {{ $users->withQueryString()->links() }}
+            {{ $users->withQueryString()->links('vendor.pagination.custom') }}
         </div>
     </div>
 </div>
@@ -230,5 +275,59 @@
             document.getElementById(formId).submit();
         }
     }
+
+    // Auto submit form when filter changes
+    document.addEventListener('DOMContentLoaded', function() {
+        const levelSelect = document.getElementById('level');
+        const sortBySelect = document.getElementById('sort_by');
+        const sortOrderSelect = document.getElementById('sort_order');
+        const perPageSelect = document.getElementById('per_page');
+        const searchInput = document.getElementById('search');
+        const form = document.querySelector('form[action="{{ route('admin.users.index') }}"]');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        // Function to show loading
+        function showLoading() {
+            if (loadingOverlay) {
+                loadingOverlay.style.display = 'flex';
+            }
+        }
+
+        // Auto submit on select change
+        [levelSelect, sortBySelect, sortOrderSelect, perPageSelect].forEach(select => {
+            if (select) {
+                select.addEventListener('change', function() {
+                    showLoading();
+                    form.submit();
+                });
+            }
+        });
+
+        // Auto submit on search with debounce
+        if (searchInput) {
+            let searchTimeout;
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    showLoading();
+                    form.submit();
+                }, 500); // 500ms delay
+            });
+        }
+
+        // Show loading on form submit
+        if (form) {
+            form.addEventListener('submit', function() {
+                showLoading();
+            });
+        }
+
+        // Show loading on pagination links
+        document.querySelectorAll('.pagination a').forEach(link => {
+            link.addEventListener('click', function() {
+                showLoading();
+            });
+        });
+    });
 </script>
-@endsection 
+@endsection

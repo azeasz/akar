@@ -1,0 +1,19 @@
+1	id	bigint unsigned	NULL	NULL	NO	NULL	auto_increment		
+2	checklist_id	bigint unsigned	NULL	NULL	NO	NULL		checklists(id)	
+3	nama_spesies	varchar(255)	utf8mb4	utf8mb4_unicode_ci	NO	NULL			
+4	nama_latin	varchar(255)	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+5	jumlah	int	NULL	NULL	NO	1			
+6	gender	varchar(255)	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+7	cincin	varchar(255)	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+8	tagging	varchar(255)	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+9	catatan	text	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+10	status_buruan	varchar(255)	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+11	alat_buru	varchar(255)	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+12	fauna_id	bigint unsigned	NULL	NULL	YES	NULL			
+13	asal	varchar(255)	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+14	harga	varchar(255)	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+15	kondisi	int	NULL	NULL	YES	0			
+16	ijin	int	NULL	NULL	YES	0			
+17	created_at	timestamp	NULL	NULL	YES	NULL			
+18	updated_at	timestamp	NULL	NULL	YES	NULL			
+19	deleted_at	timestamp	NULL	NULL	YES	NULL			

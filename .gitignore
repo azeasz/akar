@@ -5,7 +5,7 @@
 /public/storage
 /storage/*.key
 /vendor
-# .env
+.env
 .env.backup
 .env.production
 .phpunit.result.cache
@@ -19,4 +19,7 @@ yarn-error.log
 /.vscode
 /akar-mobile
 /akar-amatisangkar
+worms_export.py
+worms_indonesia.csv
+.expo
 

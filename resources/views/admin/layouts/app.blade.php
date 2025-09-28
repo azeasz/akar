@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'AKAR')</title>
     
     <!-- CSS -->
@@ -254,6 +255,18 @@
             <i class="bi bi-person-plus"></i>
             <span>Pendaftaran</span>
         </a>
+
+        <!-- Badge Management -->
+<div class="sidebar-divider"></div>
+<div class="sidebar-item">
+    <i class="bi bi-award"></i>
+    <span>Badge Management</span>
+</div>
+<a href="{{ route('admin.badges.index') }}" class="sidebar-item {{ request()->routeIs('admin.badges.*') ? 'active' : '' }}">
+    <i class="bi bi-trophy"></i>
+    <span>Kelola Badge</span>
+</a>
+
         
         <!-- Content Management -->
         <div class="sidebar-divider"></div>
@@ -267,7 +280,7 @@
         </a>
         
         <!-- Taxa Management -->
-        <div class="sidebar-divider"></div>
+        <!-- <div class="sidebar-divider"></div>
         <div class="sidebar-item">
             <i class="bi bi-tree"></i>
             <span>Data Taxa</span>
@@ -283,12 +296,27 @@
         <a href="{{ route('admin.taxas.sync') }}" class="sidebar-item {{ request()->routeIs('admin.taxas.sync') ? 'active' : '' }}">
             <i class="bi bi-arrow-repeat"></i>
             <span>Sinkronisasi Taxa</span>
+        </a> -->
+
+        <!-- Priority Fauna Management -->
+        <div class="sidebar-divider"></div>
+        <div class="sidebar-item">
+            <i class="bi bi-shield-exclamation"></i>
+            <span>Priority Management</span>
+        </div>
+        <a href="{{ route('admin.priority-fauna.index') }}" class="sidebar-item {{ request()->routeIs('admin.priority-fauna.index') ? 'active' : '' }}">
+            <i class="bi bi-speedometer2"></i>
+            <span>Fauna Prioritas</span>
         </a>
-        <a href="{{ route('admin.taxas.compare') }}" class="sidebar-item {{ request()->routeIs('admin.taxas.compare') ? 'active' : '' }}">
-            <i class="bi bi-columns-gap"></i>
-            <span>Perbandingan Taxa</span>
+        <a href="{{ route('admin.priority-fauna.categories') }}" class="sidebar-item {{ request()->routeIs('admin.priority-fauna.categories') ? 'active' : '' }}">
+            <i class="bi bi-tags"></i>
+            <span>Kelola Kategori</span>
         </a>
-        
+        <a href="{{ route('admin.priority-fauna.fauna') }}" class="sidebar-item {{ request()->routeIs('admin.priority-fauna.fauna*') ? 'active' : '' }}">
+            <i class="bi bi-list-check"></i>
+            <span>Kelola Fauna</span>
+        </a>
+
         <!-- System -->
         <div class="sidebar-divider"></div>
         <div class="sidebar-item">
@@ -387,5 +415,6 @@
     
     <!-- Additional Scripts -->
     @yield('scripts')
+    @stack('scripts')
 </body>
 </html> 

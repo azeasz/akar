@@ -7,7 +7,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-
 class UserController extends Controller
 {
     /**
@@ -18,13 +17,13 @@ class UserController extends Controller
         $query = User::query();
         
         // Filter berdasarkan level
-        if ($request->has('level')) {
+        if ($request->filled('level')) {
             $query->where('level', $request->level);
         }
         
         // Search
-        if ($request->has('search')) {
-            $search = $request->search;
+        if ($request->filled('search')) {
+            $search = trim($request->search);
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('username', 'like', "%{$search}%")
@@ -35,12 +34,22 @@ class UserController extends Controller
         }
         
         // Sorting
-        $sortField = $request->sort_by ?? 'created_at';
-        $sortDirection = $request->sort_order ?? 'desc';
+        $sortField = $request->get('sort_by', 'created_at');
+        $sortDirection = $request->get('sort_order', 'desc');
+        
+        // Validasi sort field untuk keamanan
+        $allowedSortFields = ['created_at', 'name', 'email', 'username', 'level'];
+        if (!in_array($sortField, $allowedSortFields)) {
+            $sortField = 'created_at';
+        }
+        
+        // Validasi sort direction
+        $sortDirection = in_array($sortDirection, ['asc', 'desc']) ? $sortDirection : 'desc';
+        
         $query->orderBy($sortField, $sortDirection);
         
         // Pagination
-        $perPage = $request->per_page ?? 10;
+        $perPage = $request->get('per_page', 10);
         $users = $query->paginate($perPage)->withQueryString();
         
         return view('admin.users.index', compact('users'));
@@ -187,12 +196,12 @@ class UserController extends Controller
         $query = User::query();
         
         // Apply filters like in index method
-        if ($request->has('level')) {
+        if ($request->filled('level')) {
             $query->where('level', $request->level);
         }
         
-        if ($request->has('search')) {
-            $search = $request->search;
+        if ($request->filled('search')) {
+            $search = trim($request->search);
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('username', 'like', "%{$search}%")
@@ -202,8 +211,18 @@ class UserController extends Controller
             });
         }
         
-        $sortField = $request->sort_by ?? 'created_at';
-        $sortDirection = $request->sort_order ?? 'desc';
+        // Sorting dengan validasi
+        $sortField = $request->get('sort_by', 'created_at');
+        $sortDirection = $request->get('sort_order', 'desc');
+        
+        // Validasi sort field untuk keamanan
+        $allowedSortFields = ['created_at', 'name', 'email', 'username', 'level'];
+        if (!in_array($sortField, $allowedSortFields)) {
+            $sortField = 'created_at';
+        }
+        
+        // Validasi sort direction
+        $sortDirection = in_array($sortDirection, ['asc', 'desc']) ? $sortDirection : 'desc';
         $users = $query->orderBy($sortField, $sortDirection)->get();
         
         $headers = [

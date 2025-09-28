@@ -139,21 +139,33 @@
                                     <h5 class="text-muted">Tidak ada data pengaturan</h5>
                                 </div>
                             </td>
-                        </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
         
         <div class="d-flex justify-content-end mt-3">
-            {{ $settings->withQueryString()->links() }}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item {{ $settings->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $settings->previousPageUrl() }}" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    @for($i = 1; $i <= $settings->lastPage(); $i++)
+                        <li class="page-item {{ $settings->currentPage() == $i ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $settings->url($i) }}">{{ $i }}</a>
+                        </li>
+                    @endfor
+                    <li class="page-item {{ $settings->onLastPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $settings->nextPageUrl() }}">Next</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
-</div>
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0">Panduan Tipe Pengaturan</h6>
+    <h6 class="m-0">Panduan Tipe Pengaturan</h6>
     </div>
     <div class="card-body">
         <div class="row">

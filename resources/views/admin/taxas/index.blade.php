@@ -111,7 +111,7 @@
                         </div>
                         
                         <div class="mt-3">
-                            {{ $taxas->withQueryString()->links() }}
+                            {{ $taxas->withQueryString()->links('vendor.pagination.custom') }}
                         </div>
                     @endif
                 </div>

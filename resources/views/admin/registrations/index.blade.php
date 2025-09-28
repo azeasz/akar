@@ -207,7 +207,7 @@
         
         <!-- Pagination -->
         <div class="mt-4">
-            {{ $registrations->withQueryString()->links() }}
+            {{ $registrations->withQueryString()->links('vendor.pagination.custom') }}
         </div>
         @endif
     </div>

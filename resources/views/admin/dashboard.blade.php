@@ -195,6 +195,35 @@
     </div>
 </div>
 
+<!-- Widget Fauna Prioritas -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="bi bi-shield-exclamation me-2"></i>
+                    Monitoring Fauna Prioritas
+                </h6>
+                <a href="{{ route('admin.priority-fauna.index') }}" class="btn btn-sm btn-primary">
+                    <i class="bi bi-arrow-right me-1"></i>
+                    Lihat Semua
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="row" id="priorityFaunaWidget">
+                    <!-- Loading state -->
+                    <div class="col-12 text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Memuat data fauna prioritas...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <!-- Chart Pengguna Baru -->
     <div class="col-xl-8 col-lg-7 mb-4">
@@ -672,5 +701,145 @@
             throttledUpdateGrid();
         }
     });
+
+    // Load Priority Fauna Widget Data
+    async function loadPriorityFaunaWidget() {
+        try {
+            const response = await fetch('{{ route("admin.priority-fauna.api.dashboard-data") }}');
+            const data = await response.json();
+            
+            const widget = document.getElementById('priorityFaunaWidget');
+            
+            // Create stats cards
+            const statsHtml = `
+                <div class="col-md-3 mb-3">
+                    <div class="card border-left-primary h-100">
+                        <div class="card-body">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Fauna Dipantau
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                ${data.stats.total_monitored_fauna}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card border-left-success h-100">
+                        <div class="card-body">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Laporan Hari Ini
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                ${data.stats.new_observations_today}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card border-left-info h-100">
+                        <div class="card-body">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Laporan Minggu Ini
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                ${data.stats.new_observations_week}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <div class="card border-left-warning h-100">
+                        <div class="card-body">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Perlu Review
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                ${data.stats.pending_reviews}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Create recent observations list
+            let observationsHtml = '';
+            if (data.recent_observations.length > 0) {
+                observationsHtml = `
+                    <div class="col-12">
+                        <h6 class="font-weight-bold text-primary mb-3">
+                            <i class="bi bi-clock me-1"></i>
+                            Laporan Terbaru
+                        </h6>
+                        <div class="table-responsive">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>Spesies</th>
+                                        <th>Pelapor</th>
+                                        <th>Lokasi</th>
+                                        <th>Waktu</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+                
+                data.recent_observations.forEach(obs => {
+                    observationsHtml += `
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="badge me-2" style="background-color: ${obs.category_color}; width: 12px; height: 12px;"></div>
+                                    <div>
+                                        <div class="font-weight-bold">${obs.common_name || obs.scientific_name}</div>
+                                        ${obs.common_name ? `<small class="text-muted fst-italic">${obs.scientific_name}</small>` : ''}
+                                    </div>
+                                </div>
+                            </td>
+                            <td>${obs.user_name}</td>
+                            <td><small>${obs.location}</small></td>
+                            <td><small>${obs.observed_at}</small></td>
+                            <td>
+                                <span class="badge bg-${obs.status_color}">${obs.status}</span>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                observationsHtml += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            } else {
+                observationsHtml = `
+                    <div class="col-12">
+                        <div class="text-center py-4 text-muted">
+                            <i class="bi bi-info-circle display-6 d-block mb-2"></i>
+                            <p>Belum ada laporan fauna prioritas</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            widget.innerHTML = statsHtml + observationsHtml;
+            
+        } catch (error) {
+            console.error('Error loading priority fauna widget:', error);
+            document.getElementById('priorityFaunaWidget').innerHTML = `
+                <div class="col-12">
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        Gagal memuat data fauna prioritas
+                    </div>
+                </div>
+            `;
+        }
+    }
+    
+    // Load widget data when page loads
+    loadPriorityFaunaWidget();
 </script>
 @endsection 

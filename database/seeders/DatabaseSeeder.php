@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminUserSeeder::class,
             MigrateOldDataSeeder::class, // Uncomment jika ingin migrasi data dari tabel lama
+            UpdateVerifiedUsersSeeder::class, // Seeder untuk mengupdate user yang status=1 tapi email_verified_at=NULL
+            UpdateChecklistFaunasSeeder::class, // Seeder untuk mengupdate nama_spesies dan nama_latin di checklist_faunas
         ]);
     }
 }

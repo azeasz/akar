@@ -20,23 +20,21 @@ class ChecklistFauna extends Model
         'nama_latin',
         'jumlah',
         'catatan',
-        'cincin',
-        'tagging',
         'status_buruan',
+        'tagging_status',
         'alat_buru',
         'fauna_id',
         'asal',
         'harga',
         'kondisi',
         'ijin',
+        'gender'
     ];
     
     /**
      * Atribut yang dikonversi ke tipe data lain
      */
     protected $casts = [
-        'cincin' => 'boolean',
-        'tagging' => 'boolean',
         'jumlah' => 'integer',
     ];
     

@@ -162,7 +162,7 @@
         
         <!-- Pagination -->
         <div class="mt-4">
-            {{ $admins->withQueryString()->links() }}
+            {{ $admins->withQueryString()->links('vendor.pagination.custom') }}
         </div>
     </div>
 </div>

@@ -1,0 +1,21 @@
+1	id	bigint unsigned	NULL	NULL	NO	NULL	auto_increment		
+2	burungnesia_id	bigint unsigned	NULL	NULL	NO	0			
+3	fauna_type_id	bigint unsigned	NULL	NULL	NO	1			
+4	nameId	varchar(255)	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+5	nameLat	varchar(255)	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+6	nameEn	varchar(255)	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+7	family	varchar(255)	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+8	keyword	varchar(1000)	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+9	source	text	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+10	description	text	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+11	distribution	text	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+12	seasonality	varchar(255)	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+13	social	varchar(255)	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+14	size	varchar(255)	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+15	group	varchar(255)	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+16	shape	varchar(255)	utf8mb4	utf8mb4_unicode_ci	YES	NULL			
+17	is_protection	int	NULL	NULL	NO	0			
+18	fieldguide	tinyint(1)	NULL	NULL	NO	0			
+19	created_at	timestamp	NULL	NULL	YES	NULL			
+20	updated_at	timestamp	NULL	NULL	YES	NULL			
+21	deleted_at	timestamp	NULL	NULL	YES	NULL			

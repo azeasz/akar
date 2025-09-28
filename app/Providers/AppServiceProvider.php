@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Observers\UserObserver;
+use App\Services\BadgeMemberService;
+use App\Services\FobiApiService;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Blade;
 
@@ -14,7 +16,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Register BadgeMemberService
+        $this->app->singleton(BadgeMemberService::class, function ($app) {
+            return new BadgeMemberService($app->make(FobiApiService::class));
+        });
     }
 
     /**

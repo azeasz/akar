@@ -5,6 +5,9 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\SyncTaxaData;
+use App\Console\Commands\SetupBadgeStorage;
+use App\Console\Commands\TestFobiApi;
+use App\Console\Commands\TestBadgeTracking;
 
 class Kernel extends ConsoleKernel
 {
@@ -15,6 +18,9 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         SyncTaxaData::class,
+        SetupBadgeStorage::class,
+        TestFobiApi::class,
+        TestBadgeTracking::class,
     ];
     
     /**

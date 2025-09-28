@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
@@ -33,6 +34,7 @@ class User extends Authenticatable implements JWTSubject
         'profile_picture',
         'level',
         'email_verified_at',
+        'email_verification_token',
         'avatar',
         'domisili',
         'pengamatan_satwa',
@@ -80,6 +82,13 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array<string, string>
      */
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['total_checklists', 'total_species'];
+
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
@@ -133,5 +142,46 @@ class User extends Authenticatable implements JWTSubject
     public function isApproved()
     {
         return $this->email_verified_at !== null;
+    }
+
+    /**
+     * Get the user's profile picture URL.
+     *
+     * @param  string|null  $value
+     * @return string|null
+     */
+    public function getProfilePictureAttribute($value)
+    {
+        if ($value) {
+            return Storage::disk('public')->url($value);
+        }
+
+        return null; // Or return a default image URL
+    }
+
+    /**
+     * Get the total number of checklists for the user.
+     *
+     * @return int
+     */
+    public function getTotalChecklistsAttribute()
+    {
+        return $this->checklists()->count();
+    }
+
+    /**
+     * Get the total number of unique species from all user's checklists.
+     *
+     * @return int
+     */
+    public function getTotalSpeciesAttribute()
+    {
+        // Get all checklist IDs for the user
+        $checklistIds = $this->checklists()->pluck('id');
+
+        // Count the number of distinct fauna (species) across those checklists
+        return ChecklistFauna::whereIn('checklist_id', $checklistIds)
+            ->distinct('fauna_id')
+            ->count('fauna_id');
     }
 }

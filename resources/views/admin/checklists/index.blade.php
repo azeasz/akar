@@ -85,8 +85,8 @@
                     <label class="form-label">Status Kelengkapan</label>
                     <select name="is_completed" class="form-select">
                         <option value="">Semua</option>
-                        <option value="1" {{ isset($filters['is_completed']) && $filters['is_completed'] == '1' ? 'selected' : '' }}>Data Lengkap</option>
-                        <option value="0" {{ isset($filters['is_completed']) && $filters['is_completed'] == '0' ? 'selected' : '' }}>Data Belum Lengkap</option>
+                        <option value="1" {{ isset($filters['is_completed']) && $filters['is_completed'] == '1' ? 'selected' : '' }}>✓</option>
+                        <option value="0" {{ isset($filters['is_completed']) && $filters['is_completed'] == '0' ? 'selected' : '' }}>◔</option>
                     </select>
                 </div>
             </div>
@@ -149,9 +149,9 @@
                         </td>
                         <td>
                             @if($checklist->completion_status == 'Selesai')
-                                <i class="bi bi-check-circle-fill text-success" title="Data Lengkap"></i>
+                                <i class="bi bi-check-circle-fill text-success" title="✓"></i>
                             @else
-                                <i class="bi bi-clock text-warning" title="Data Belum Lengkap"></i>
+                                <i class="bi bi-clock text-warning" title="◔"></i>
                             @endif
                         </td>
                         <td>{{ $checklist->faunas->count() }}</td>
@@ -206,14 +206,7 @@
             </table>
         </div>
         
-        <div class="d-flex justify-content-between align-items-center mt-3">
-            <div>
-                Menampilkan {{ $checklists->firstItem() ?? 0 }} - {{ $checklists->lastItem() ?? 0 }} dari {{ $checklists->total() }} data
-            </div>
-            <div>
-                {{ $checklists->withQueryString()->links() }}
-            </div>
-        </div>
+        {{ $checklists->withQueryString()->links('vendor.pagination.custom') }}
     </div>
 </div>
 @endsection

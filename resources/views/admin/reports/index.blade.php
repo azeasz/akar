@@ -63,8 +63,8 @@
                     <label for="is_resolved" class="form-label">Status</label>
                     <select name="is_resolved" id="is_resolved" class="form-select" onchange="this.form.submit()">
                         <option value="">-- Semua Status --</option>
-                        <option value="1" {{ request('is_resolved') == '1' ? 'selected' : '' }}>Selesai</option>
-                        <option value="0" {{ request('is_resolved') == '0' ? 'selected' : '' }}>Belum Selesai</option>
+                        <option value="1" {{ request('is_resolved') == '1' ? 'selected' : '' }}>Laporan Lengkap</option>
+                        <option value="0" {{ request('is_resolved') == '0' ? 'selected' : '' }}>Laporan Tidak Lengkap</option>
                     </select>
                 </div>
                 <div class="col-md-4">
@@ -202,15 +202,27 @@
         </div>
         
         <div class="d-flex justify-content-end mt-3">
-            {{ $reports->withQueryString()->links() }}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item {{ $reports->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $reports->previousPageUrl() }}" tabindex="-1" aria-disabled="true">Previous</a>
+                    </li>
+                    @for ($i = 1; $i <= $reports->lastPage(); $i++)
+                        <li class="page-item {{ $reports->currentPage() == $i ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $reports->url($i) }}">{{ $i }}</a>
+                        </li>
+                    @endfor
+                    <li class="page-item {{ $reports->onLastPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $reports->nextPageUrl() }}">Next</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
-</div>
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0">Statistik Laporan</h6>
-    </div>
+    <h6 class="m-0">Statistik Laporan</h6>    </div>
     <div class="card-body">
         <div class="row">
             <div class="col-md-3 mb-3">

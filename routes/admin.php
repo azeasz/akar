@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BadgeController;
 use App\Http\Controllers\Admin\ChecklistController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\RegistrationController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TaxaController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ChecklistFaunaController;
+use App\Http\Controllers\Admin\AdminPriorityFaunaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -82,6 +84,46 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         
         // Checklist Fauna
         Route::get('checklist-faunas/{fauna}/find-taxa', [ChecklistFaunaController::class, 'findTaxa'])->name('checklist-faunas.find-taxa');
+        
+        // Badge Management
+        Route::resource('badges', BadgeController::class);
+        
+        // Priority Fauna Management
+        Route::prefix('priority-fauna')->name('priority-fauna.')->group(function () {
+            // Dashboard
+            Route::get('/', [AdminPriorityFaunaController::class, 'index'])->name('index');
+            
+            // Categories Management
+            Route::get('categories', [AdminPriorityFaunaController::class, 'categories'])->name('categories');
+            Route::post('categories', [AdminPriorityFaunaController::class, 'storeCategory'])->name('categories.store');
+            Route::put('categories/{category}', [AdminPriorityFaunaController::class, 'updateCategory'])->name('categories.update');
+            Route::delete('categories/{category}', [AdminPriorityFaunaController::class, 'destroyCategory'])->name('categories.destroy');
+            
+            // Fauna Management
+            Route::get('fauna', [AdminPriorityFaunaController::class, 'fauna'])->name('fauna');
+            Route::get('fauna/create', [AdminPriorityFaunaController::class, 'createFauna'])->name('fauna.create');
+            Route::post('fauna', [AdminPriorityFaunaController::class, 'storeFauna'])->name('fauna.store');
+            Route::get('fauna/{fauna}', [AdminPriorityFaunaController::class, 'showFauna'])->name('fauna.show');
+            Route::put('fauna/{fauna}', [AdminPriorityFaunaController::class, 'updateFauna'])->name('fauna.update');
+            Route::delete('fauna/{fauna}', [AdminPriorityFaunaController::class, 'destroyFauna'])->name('fauna.destroy');
+            
+            // Sync Operations
+            Route::post('fauna/{fauna}/sync', [AdminPriorityFaunaController::class, 'syncFauna'])->name('fauna.sync');
+            Route::post('sync-all', [AdminPriorityFaunaController::class, 'bulkSync'])->name('sync-all');
+            
+            // Observations Management
+            Route::post('observations/{observation}/review', [AdminPriorityFaunaController::class, 'reviewObservation'])->name('observations.review');
+            
+            // API Endpoints
+            Route::get('api/taxa-suggestions', [AdminPriorityFaunaController::class, 'taxaSuggestions'])->name('api.taxa-suggestions');
+            Route::get('api/dashboard-data', [AdminPriorityFaunaController::class, 'getDashboardData'])->name('api.dashboard-data');
+            Route::get('api/test', [AdminPriorityFaunaController::class, 'testEndpoint'])->name('api.test');
+            
+            // Test page
+            Route::get('test-api', function() {
+                return view('admin.priority-fauna.test-api');
+            })->name('test-api');
+        });
         
         // Logout
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');

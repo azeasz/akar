@@ -198,9 +198,7 @@
             </table>
         </div>
         
-        <div class="d-flex justify-content-end mt-3">
-            {{ $logs->withQueryString()->links() }}
-        </div>
+        {{ $logs->withQueryString()->links('vendor.pagination.custom') }}
     </div>
 </div>
 @endsection
